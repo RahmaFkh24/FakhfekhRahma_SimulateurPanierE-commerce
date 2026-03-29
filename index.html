@@ -3,7 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <title>Panier E-commerce</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial;
+      background: rgb(223, 201, 218);
+        padding: 20px;
+        text-align: center;}
+        h1 {
+          margin-bottom: 20px;
+        }
+        .container{
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .box{
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width : 300px;
+            margin: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+
+
+            .product {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+            }
+            button{
+                padding : 5px 10px;
+                background: rgb(248, 14, 194);
+                color:aliceblue;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            button:hover{
+                background: rgba(228, 197, 221, 0.087);}
+                ul{
+                    list-style: none;
+                    padding: 0;
+                }
+                li{
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 5px;
+                }
+                .remove{
+                    background: red;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+                
+  </style>
 </head>
 <body>
 
@@ -36,6 +91,40 @@
     <h3>Total: <span id="total">0</span> DT</h3>
   </div>
 
-  <script></script>
+  <script>
+    let cart = [];
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      updateCart();
+    }
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+    function updateCart() {
+        // Met à jour l'affichage du panier
+      const cartItems = document.getElementById('cartItems');
+      const totalEl = document.getElementById('total');
+      //on vide d'abord la liste pour éviter les doublons
+      cartItems.innerHTML = '';
+      // Calcul du total 
+      let total = 0;
+      // Parcours du panier pour afficher les nouveaux éléments 
+      cart.forEach((item, index) => {
+        //incrémentation de prix a chaque fois
+        total += item.price;
+        //j'ajoute lément dans la liste du panier
+        const li = document.createElement('li');
+        li.innerHTML = `
+            ${item.name} - ${item.price} DT
+            <button onclick="removeFromCart(${index})">Supprimer</button>
+          `;
+          //j'ajoute l'élément dans la liste du panier
+        cartItems.appendChild(li);
+      });
+      //total du prix
+      totalEl.textContent = total;
+    }
+  </script>
 </body>
 </html>
