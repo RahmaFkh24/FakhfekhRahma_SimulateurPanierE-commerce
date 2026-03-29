@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Panier E-commerce</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>🛒 Mon Panier</h1>
+
+  <!-- Liste des produits -->
+  <div id="products">
+    <h2>Produits</h2>
+
+    <div class="product">
+      <span>Chaussures - 120 DT</span>
+      <button onclick="addToCart('Chaussures', 120)">Ajouter</button>
+    </div>
+
+    <div class="product">
+      <span>Sac - 80 DT</span>
+      <button onclick="addToCart('Sac', 80)">Ajouter</button>
+    </div>
+
+    <div class="product">
+      <span>Montre - 150 DT</span>
+      <button onclick="addToCart('Montre', 150)">Ajouter</button>
+    </div>
+  </div>
+
+  <!-- Panier -->
+  <div id="cart">
+    <h2>Panier</h2>
+    <ul id="cartItems"></ul>
+    <h3>Total: <span id="total">0</span> DT</h3>
+  </div>
+
+  <script></script>
+</body>
+</html>
