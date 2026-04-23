@@ -1,130 +1,273 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Panier E-commerce</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: rgb(223, 201, 218);
-        padding: 20px;
-        text-align: center;}
-        h1 {
-          margin-bottom: 20px;
-        }
-        .container{
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-        .box{
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            width : 300px;
-            margin: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+<meta charset="UTF-8">
+<title>Panier E-commerce</title>
 
+<style>
+/* 🌈 Background animé */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(-45deg, #d9a7c7, #fffcdc, #c9d6ff, #e2e2e2);
+  background-size: 400% 400%;
+  animation: gradientBG 10s ease infinite;
+  padding: 20px;
+  margin: 0;
+  text-align: center;
+}
 
-            .product {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 10px;
-            }
-            button{
-                padding : 5px 10px;
-                background: rgb(248, 14, 194);
-                color:aliceblue;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-            button:hover{
-                background: rgba(228, 197, 221, 0.087);}
-                ul{
-                    list-style: none;
-                    padding: 0;
-                }
-                li{
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 5px;
-                }
-                .remove{
-                    background: red;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                }
-                
-  </style>
+@keyframes gradientBG {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+h1 {
+  color: #333;
+}
+
+/* badge */
+.badge {
+  background: #ff4757;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+/* layout */
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* produits */
+.product {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 5px;
+  transition: 0.3s;
+}
+
+.product:hover {
+  transform: scale(1.05);
+}
+
+.product img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+button {
+  padding: 6px 10px;
+  background: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #574fd6;
+}
+
+/* panier */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+  align-items: center;
+}
+
+.controls button {
+  margin-left: 3px;
+}
+
+.remove {
+  background: #ff4757;
+}
+
+.empty {
+  color: gray;
+  font-style: italic;
+}
+
+input {
+  padding: 6px;
+  margin-top: 10px;
+  width: 70%;
+}
+
+/* animation ajout */
+.fade {
+  animation: fade 0.3s ease;
+}
+
+@keyframes fade {
+  from {opacity: 0; transform: scale(0.9);}
+  to {opacity: 1; transform: scale(1);}
+}
+</style>
 </head>
+
 <body>
 
-  <h1>🛒 Mon Panier</h1>
+<h1>🛒 Mon Panier <span class="badge" id="count">0</span></h1>
 
-  <!-- Liste des produits -->
-  <div id="products">
-    <h2>Produits</h2>
+<div class="container">
 
-    <div class="product">
-      <span>Chaussures - 120 DT</span>
-      <button onclick="addToCart('Chaussures', 120)">Ajouter</button>
-    </div>
+<!-- PRODUITS -->
+<div class="box">
+  <h2>Produits</h2>
 
-    <div class="product">
-      <span>Sac - 80 DT</span>
-      <button onclick="addToCart('Sac', 80)">Ajouter</button>
-    </div>
-
-    <div class="product">
-      <span>Montre - 150 DT</span>
-      <button onclick="addToCart('Montre', 150)">Ajouter</button>
-    </div>
+  <div class="product">
+    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff">
+    <span>Chaussures - 120 DT</span>
+    <button onclick="addToCart('Chaussures',120)">Ajouter</button>
   </div>
 
-  <!-- Panier -->
-  <div id="cart">
-    <h2>Panier</h2>
-    <ul id="cartItems"></ul>
-    <h3>Total: <span id="total">0</span> DT</h3>
+  <div class="product">
+    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
+    <span>Sac - 80 DT</span>
+    <button onclick="addToCart('Sac',80)">Ajouter</button>
   </div>
 
-  <script>
-    let cart = [];
-    function addToCart(name, price) {
-      cart.push({ name, price });
-      updateCart();
-    }
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCart();
-    }
-    function updateCart() {
-        // Met à jour l'affichage du panier
-      const cartItems = document.getElementById('cartItems');
-      const totalEl = document.getElementById('total');
-      //on vide d'abord la liste pour éviter les doublons
-      cartItems.innerHTML = '';
-      // Calcul du total 
-      let total = 0;
-      // Parcours du panier pour afficher les nouveaux éléments 
-      cart.forEach((item, index) => {
-        //incrémentation de prix a chaque fois
-        total += item.price;
-        //j'ajoute lément dans la liste du panier
-        const li = document.createElement('li');
-        li.innerHTML = `
-            ${item.name} - ${item.price} DT
-            <button onclick="removeFromCart(${index})">Supprimer</button>
-          `;
-          //j'ajoute l'élément dans la liste du panier
-        cartItems.appendChild(li);
-      });
-      //total du prix
-      totalEl.textContent = total;
-    }
-  </script>
+  <div class="product">
+    <img src="https://images.unsplash.com/photo-1519741497674-611481863552">
+    <span>Montre - 150 DT</span>
+    <button onclick="addToCart('Montre',150)">Ajouter</button>
+  </div>
+</div>
+
+<!-- PANIER -->
+<div class="box">
+  <h2>Panier</h2>
+  <ul id="cartItems"></ul>
+
+  <h3>Total: <span id="total">0</span> DT</h3>
+
+  <input id="promo" placeholder="Code promo">
+  <button onclick="applyPromo()">Appliquer</button>
+</div>
+
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let discount = 0;
+
+/* Ajouter */
+function addToCart(name, price) {
+  const item = cart.find(p => p.name === name);
+
+  if (item) item.qty++;
+  else cart.push({ name, price, qty: 1 });
+
+  saveCart();
+  updateCart();
+}
+
+/* Modifier quantité */
+function changeQty(index, delta) {
+  cart[index].qty += delta;
+
+  if (cart[index].qty <= 0) {
+    cart.splice(index, 1);
+  }
+
+  saveCart();
+  updateCart();
+}
+
+/* Supprimer */
+function removeItem(index) {
+  cart.splice(index, 1);
+  saveCart();
+  updateCart();
+}
+
+/* Promo */
+function applyPromo() {
+  const code = document.getElementById("promo").value;
+
+  if (code === "PROMO10") {
+    discount = 0.1;
+    alert("Promo appliquée !");
+  } else {
+    alert("Code invalide");
+  }
+
+  updateCart();
+}
+
+/* Update */
+function updateCart() {
+  const cartItems = document.getElementById("cartItems");
+  const totalEl = document.getElementById("total");
+  const countEl = document.getElementById("count");
+
+  cartItems.innerHTML = "";
+
+  let total = 0;
+  let count = 0;
+
+  if (cart.length === 0) {
+    cartItems.innerHTML = "<p class='empty'>Panier vide</p>";
+  }
+
+  cart.forEach((item, index) => {
+    total += item.price * item.qty;
+    count += item.qty;
+
+    const li = document.createElement("li");
+    li.classList.add("fade");
+
+    li.innerHTML = `
+      ${item.name} (${item.qty})
+      <div class="controls">
+        <button onclick="changeQty(${index},1)">+</button>
+        <button onclick="changeQty(${index},-1)">-</button>
+        <button class="remove" onclick="removeItem(${index})">X</button>
+      </div>
+    `;
+
+    cartItems.appendChild(li);
+  });
+
+  total = total - (total * discount);
+
+  totalEl.textContent = total.toFixed(2);
+  countEl.textContent = count;
+}
+
+/* Save */
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+/* Init */
+updateCart();
+</script>
+
 </body>
 </html>
