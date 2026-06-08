@@ -1,0 +1,38 @@
+[
+    {
+        "date": "2026-06-08 12:55:44",
+        "items": [
+            {
+                "name": "Chaussures",
+                "price": 120,
+                "qty": 1
+            }
+        ],
+        "total": 120,
+        "promo": null
+    },
+    {
+        "date": "2026-06-08 12:57:32",
+        "items": [
+            {
+                "name": "Sac",
+                "price": 80,
+                "qty": 1
+            }
+        ],
+        "total": 80,
+        "promo": null
+    },
+    {
+        "date": "2026-06-08 13:05:37",
+        "items": [
+            {
+                "name": "Montre",
+                "price": 150,
+                "qty": 3
+            }
+        ],
+        "total": 405,
+        "promo": "rahma10"
+    }
+]

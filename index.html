@@ -118,6 +118,15 @@ input {
   width: 70%;
 }
 
+#orderResult {
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+.success {
+  color: #2f8f4f;
+}
+
 /* animation ajout */
 .fade {
   animation: fade 0.3s ease;
@@ -168,6 +177,8 @@ input {
 
   <input id="promo" placeholder="Code promo">
   <button onclick="applyPromo()">Appliquer</button>
+  <button onclick="submitOrder()">Commander</button>
+  <p id="orderResult" class="empty"></p>
 </div>
 
 </div>
@@ -210,7 +221,7 @@ function removeItem(index) {
 function applyPromo() {
   const code = document.getElementById("promo").value;
 
-  if (code === "PROMO10") {
+  if (code === "rahma10") {
     discount = 0.1;
     alert("Promo appliquée !");
   } else {
@@ -218,6 +229,50 @@ function applyPromo() {
   }
 
   updateCart();
+}
+
+/* Envoyer la commande au backend */
+function submitOrder() {
+  if (cart.length === 0) {
+    alert("Votre panier est vide.");
+    return;
+  }
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0) * (1 - discount);
+  const payload = {
+    cart,
+    total: Number(total.toFixed(2)),
+    promo: document.getElementById("promo").value || null,
+  };
+
+  fetch('order.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+    .then(response => response.json())
+    .then(data => {
+      const result = document.getElementById('orderResult');
+      if (data.success) {
+        result.textContent = 'Commande enregistrée avec succès !';
+        result.className = 'success';
+        cart = [];
+        discount = 0;
+        document.getElementById('promo').value = '';
+        saveCart();
+        updateCart();
+      } else {
+        result.textContent = 'Erreur : ' + (data.message || 'Impossible d’enregistrer la commande.');
+        result.className = 'empty';
+      }
+    })
+    .catch(() => {
+      const result = document.getElementById('orderResult');
+      result.textContent = 'Erreur serveur : impossible de contacter le backend.';
+      result.className = 'empty';
+    });
 }
 
 /* Update */
